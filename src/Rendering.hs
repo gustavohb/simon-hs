@@ -48,3 +48,14 @@ buttonsAsPicture bp = pictures [ greenButton bp
                                 , redButton bp
                                 , blueButton bp
                                 , yellowButton bp ]
+
+drawScore :: GameState -> Picture
+drawScore gs = case status gs of
+                 GameOver -> scale 0.3 0.3 $ translate (-310) (-35) $ color white $ text $ "Try Again"
+                 Finished -> scale 0.3 0.3 $ translate (-310) (-35) $ color white $ text $ "You Won!"
+                 _        -> scale 0.4 0.4 $ translate (-35) (-45) $ color white $ text $ show (seqPos gs - 1)
+
+renderState :: GameState -> Picture
+renderState gs = pictures [ gameAsPicture gs
+                          , drawScore gs
+                          ]
