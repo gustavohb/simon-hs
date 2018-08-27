@@ -18,6 +18,9 @@ colorDisplayTime = 30
 initialDelay :: Int
 initialDelay = 100
 
+timeout :: Int
+timeout = 260
+
 maxSeqLen :: Int
 maxSeqLen = 100
 

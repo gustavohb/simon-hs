@@ -7,19 +7,35 @@ import Game
 
 update :: ViewPort -> Float -> GameState -> GameState
 update _ _ gs
-  | timer gs' <= 0 = playSequence gs'
+  | timer gs' <= 0 = nextState gs'
   | otherwise      = gs'
     where
       gs' = gs {timer = (timer gs) - 1}
 
+nextState :: GameState -> GameState
+nextState gs = case status gs of
+                    Playing   -> playSequence gs
+                    Receiving -> receiveSequence gs
+                    _         -> gs
+
 playSequence :: GameState -> GameState
 playSequence gs | isColorOn          = setColorOn Nothing colorDisplayTime gs
                 | continuePlaying    = incPlayerPos $ setColorOn cc colorDisplayTime gs
-                | otherwise          = resetPlayerPos $ setColorOn Nothing initialDelay gs
+                | otherwise          = changeToReceiving $ resetPlayerPos $ setColorOn Nothing timeout gs
   where
     isColorOn = colorOn gs /= Nothing
     cc = Just $ getCurrentColor gs
     continuePlaying = playerPos gs < seqPos gs
+
+receiveSequence :: GameState -> GameState
+receiveSequence gs | isValidColor gs = if continueSeq then
+                                         incPlayerPos $ setColorOn Nothing timeout gs
+                                       else
+                                         incSeqPos $ changeToPlaying $ resetPlayerPos $ setColorOn Nothing colorDisplayTime gs
+                   | otherwise       = changeToGameOver gs
+  where
+   nextPos = playerPos gs + 1
+   continueSeq = nextPos < seqPos gs
 
 setColorOn :: Maybe ButtonColor -> Int -> GameState -> GameState
 setColorOn c t gs = gs {colorOn = c, timer = t}
@@ -31,6 +47,27 @@ incPlayerPos :: GameState -> GameState
 incPlayerPos gs = gs {playerPos = nextPos}
   where
     nextPos = playerPos gs + 1
+
+incSeqPos :: GameState -> GameState
+incSeqPos gs | nextPos > maxSeqLen = changeToFinished gs
+             | otherwise           = gs {seqPos = nextPos, status = Playing}
+  where nextPos = seqPos gs + 1
+
+changeToReceiving :: GameState -> GameState
+changeToReceiving gs = gs {status = Receiving}
+
+changeToPlaying :: GameState -> GameState
+changeToPlaying gs = gs {status = Playing}
+
+changeToGameOver :: GameState -> GameState
+changeToGameOver gs = gs {status = GameOver, colorOn = Nothing}
+
+changeToFinished :: GameState -> GameState
+changeToFinished gs = gs {status = Finished, colorOn = Nothing}
+
+isValidColor :: GameState -> Bool
+isValidColor gs = colorOn gs == cc
+  where cc = Just $ getCurrentColor gs
 
 getCurrentColor :: GameState -> ButtonColor
 getCurrentColor gs = c
