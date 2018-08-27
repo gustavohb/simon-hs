@@ -18,4 +18,4 @@ main :: IO ()
 main = do
     gen <- newStdGen
     let rndColorSeq  = genColorSeq gen maxSeqLen
-    simulate window backgroundColor fps initialState {colorSeq = rndColorSeq} gameAsPicture update
+    play window backgroundColor fps initialState {colorSeq = rndColorSeq} gameAsPicture handleInput update

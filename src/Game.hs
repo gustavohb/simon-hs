@@ -15,6 +15,9 @@ fps = 60
 colorDisplayTime :: Int
 colorDisplayTime = 30
 
+colorSelectTime :: Int
+colorSelectTime = 15
+
 initialDelay :: Int
 initialDelay = 100
 
@@ -50,6 +53,6 @@ initialState = GameState
   , timer = initialDelay
   , status = Playing
   , colorSeq = []
-  , seqPos = 6
+  , seqPos = 1
   , playerPos = 0
   }

@@ -1,12 +1,12 @@
 module Logic where
 
-import Graphics.Gloss.Data.ViewPort
+import Graphics.Gloss.Interface.Pure.Game
 import System.Random
 
 import Game
 
-update :: ViewPort -> Float -> GameState -> GameState
-update _ _ gs
+update :: Float -> GameState -> GameState
+update _ gs
   | timer gs' <= 0 = nextState gs'
   | otherwise      = gs'
     where
@@ -36,6 +36,23 @@ receiveSequence gs | isValidColor gs = if continueSeq then
   where
    nextPos = playerPos gs + 1
    continueSeq = nextPos < seqPos gs
+
+handleInput :: Event -> GameState -> GameState
+handleInput (EventKey (MouseButton LeftButton) Up _ mousePos) gs = case status gs of
+                                                                    Receiving -> gs'
+                                                                    GameOver  -> initialState {colorSeq = genColorSeq gen maxSeqLen}
+                                                                    _         -> gs
+  where
+    c   = mousePosAsButtonColor mousePos
+    gs' = setColorOn (Just c) colorSelectTime gs
+    gen = mkStdGen $ seqPos gs
+handleInput _                                                 gs = gs
+
+mousePosAsButtonColor :: (Float, Float) -> ButtonColor
+mousePosAsButtonColor (x, y) | x < 0 && y < 0 = Yellow
+                             | x < 0 && y > 0 = Green
+                             | x > 0 && y > 0 = Red
+                             | x > 0 && y < 0 = Blue
 
 setColorOn :: Maybe ButtonColor -> Int -> GameState -> GameState
 setColorOn c t gs = gs {colorOn = c, timer = t}
