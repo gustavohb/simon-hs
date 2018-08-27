@@ -2,6 +2,8 @@ module Main where
 
 import Graphics.Gloss
 
+import System.Random
+
 import Game
 import Logic
 import Rendering
@@ -13,4 +15,7 @@ backgroundColor :: Color
 backgroundColor = makeColorI 51 51 51 255
 
 main :: IO ()
-main = simulate window backgroundColor fps initialState gameAsPicture update
+main = do
+    gen <- newStdGen
+    let rndColorSeq  = genColorSeq gen maxSeqLen
+    simulate window backgroundColor fps initialState {colorSeq = rndColorSeq} gameAsPicture update

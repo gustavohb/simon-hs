@@ -4,18 +4,6 @@ import Graphics.Gloss
 
 import Game
 
-screenWidth :: Int
-screenWidth = 480
-
-screenHeight :: Int
-screenHeight = 480
-
-screenOffset :: Int
-screenOffset = 100
-
-fps :: Int
-fps = 60
-
 yellowOn = color $ makeColorI 255 253 56 255
 yellowOff = color $ makeColorI 254 210 48 255
 

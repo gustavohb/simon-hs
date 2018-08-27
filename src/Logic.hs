@@ -1,6 +1,8 @@
 module Logic where
 
 import Graphics.Gloss.Data.ViewPort
+import System.Random
+
 import Game
 
 update :: ViewPort -> Float -> GameState -> GameState
@@ -35,3 +37,12 @@ getCurrentColor gs = c
   where
     p = playerPos gs
     c = colorSeq gs !! p
+
+genColorSeq :: StdGen -> Int -> [ButtonColor]
+genColorSeq gen len = map intToColor (take len $ randomRs (1,4) gen)
+
+intToColor :: Int -> ButtonColor
+intToColor n | n == 1 = Yellow
+             | n == 2 = Green
+             | n == 3 = Red
+             | n == 4 = Blue

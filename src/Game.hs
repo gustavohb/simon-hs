@@ -1,10 +1,25 @@
 module Game where
 
+screenWidth :: Int
+screenWidth = 480
+
+screenHeight :: Int
+screenHeight = 480
+
+screenOffset :: Int
+screenOffset = 100
+
+fps :: Int
+fps = 60
+
 colorDisplayTime :: Int
 colorDisplayTime = 30
 
 initialDelay :: Int
 initialDelay = 100
+
+maxSeqLen :: Int
+maxSeqLen = 100
 
 data GameState = GameState
   { colorOn :: Maybe ButtonColor
@@ -31,7 +46,7 @@ initialState = GameState
   { colorOn = Nothing
   , timer = initialDelay
   , status = Playing
-  , colorSeq = [Green, Red, Blue, Yellow, Red, Yellow, Blue]
+  , colorSeq = []
   , seqPos = 6
   , playerPos = 0
   }
