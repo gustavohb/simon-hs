@@ -11,9 +11,6 @@ import Rendering
 window :: Display
 window = InWindow "Simon" (screenWidth, screenHeight) (screenOffset, screenOffset)
 
-backgroundColor :: Color
-backgroundColor = makeColorI 51 51 51 255
-
 main :: IO ()
 main = do
     gen <- newStdGen
