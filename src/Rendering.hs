@@ -4,7 +4,7 @@ import Graphics.Gloss
 
 import Game
 
-backgroundColor = makeColorI 222 222 222 255
+backgroundColor = makeColorI 240 240 240 255
 
 borderColor = color $ makeColorI 53 52 63 255
 
