@@ -4,20 +4,34 @@ import Graphics.Gloss
 
 import Game
 
-yellowOn = color $ makeColorI 255 253 56 255
-yellowOff = color $ makeColorI 254 210 48 255
+backgroundColor = makeColorI 240 240 240 255
 
-blueOn = color $ makeColorI 36 185 252 255
-blueOff = color $ makeColorI 20 136 189 255
+yellowOn = color $ makeColorI 255 221 97 255
+yellowOff = color $ makeColorI 244 194 13 255
 
-redOn = color $ makeColorI 252 13 27 255
-redOff = color $ makeColorI 194 10 41 255
+blueOn = color $ makeColorI 122 171 255 255
+blueOff = color $ makeColorI 72 133 237 255
 
-greenOn = color $ makeColorI 11 215 131 255
-greenOff = color $ makeColorI 23 162 106 255
+redOn = color $ makeColorI 255 87 89 255
+redOff = color $ makeColorI 219 50 54 255
 
-radius = 150.0
+greenOn = color $ makeColorI 93 219 116 255
+greenOff = color $ makeColorI 60 186 84 255
+
+borderColor = color $ makeColorI 66 66 66 255
+
+cCircleColor = color $ makeColorI 241 233 192 255
+
+radius = 140.0
 thickness = 100.0
+
+textColor = color $ makeColorI 66 66 66 255
+
+hBar = borderColor $ rectangleSolid 404 13
+vBar = borderColor $ rectangleSolid 13 404
+
+cCircle = color backgroundColor $ circleSolid 78
+borderCircle = borderColor $ circleSolid 202
 
 greenArc  = thickArc 90.0 180.0 radius thickness
 redArc    = thickArc 0.0  90.0 radius thickness
@@ -44,16 +58,20 @@ gameAsPicture gs = case colorOn gs of
                         Nothing -> (buttonsAsPicture buttonsOff)
 
 buttonsAsPicture :: ButtonsPictures -> Picture
-buttonsAsPicture bp = pictures [ greenButton bp
-                                , redButton bp
-                                , blueButton bp
-                                , yellowButton bp ]
+buttonsAsPicture bp = pictures [ borderCircle
+                               , greenButton bp
+                               , redButton bp
+                               , blueButton bp
+                               , yellowButton bp
+                               , hBar
+                               , vBar
+                               , cCircle ]
 
 drawScore :: GameState -> Picture
 drawScore gs = case status gs of
-                 GameOver -> scale 0.3 0.3 $ translate (-310) (-35) $ color white $ text $ "Try Again"
-                 Finished -> scale 0.3 0.3 $ translate (-310) (-35) $ color white $ text $ "You Won!"
-                 _        -> scale 0.4 0.4 $ translate (-35) (-45) $ color white $ text $ show (seqPos gs - 1)
+                 GameOver -> scale 0.2 0.2 $ translate (-310) (-35) $ textColor $ text $ "Try Again"
+                 Finished -> scale 0.2 0.2 $ translate (-310) (-35) $ textColor $ text $ "You Won!"
+                 _        -> scale 0.3 0.3 $ translate (-35) (-45) $ textColor $ text $ show (seqPos gs - 1)
 
 renderState :: GameState -> Picture
 renderState gs = pictures [ gameAsPicture gs
