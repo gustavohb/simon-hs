@@ -38,6 +38,15 @@ redArc    = thickArc 0.0  90.0 radius thickness
 yellowArc = thickArc 180.0 270.0 radius thickness
 blueArc   = thickArc 270.0 359.9 radius thickness
 
+hBar = borderColor $ rectangleSolid barLength barThickness
+vBar = borderColor $ rectangleSolid barThickness barLength
+
+
+
+cCircle = color backgroundColor $ circleSolid 78
+
+borderCircle = borderColor $ circleSolid 202
+
 data ButtonsPictures  = ButtonsPictures
   { greenButton :: Picture
   , redButton :: Picture
